@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="starter-template">
+  <h1>KLU</h1>
+  <hr><br>
+  chat
+  <div id="chat"></div>
+
+
+<div id="message">
+  <input id="messageInput" />
+  <button onclick="sendMessage()">Send</button>
+</div>
+<script>
+  const chatDiv = document.getElementById("chat");
+  const user_id = 1; // Replace , TODO
+
+  const socket = new WebSocket(`ws://localhost:8004/ws/chat/${user_id}`);
+
+  socket.onopen = (event) => {
+    chatDiv.innerHTML = "Please ask a question";
+  };
+
+  socket.onmessage = (event) => {
+    const message = event.data;
+    chatDiv.innerHTML += `<p> ${message}</p>`;
+  };
+
+  function sendMessage() {
+    const messageInput = document.getElementById("messageInput");
+    const message = messageInput.value;
+    socket.send(message);
+    messageInput.value = "";
+  }
+</script>
+ 
+ 
+  <br><br>
+  
+    <h3>Runtime for getting answer</h3>
+    <button id="quest" type="button" class="btn btn-primary" onclick="handleQuestion(100)">handle question</a>
+      
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Status</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody id="tasks">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

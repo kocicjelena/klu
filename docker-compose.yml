@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+
+  ai:
+    build: ./klutest
+    ports:
+      - 8004:8000
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - ./klutest:/usr/src/klutest
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+
+  worker:
+    build: ./klutest
+    command: celery -A worker.celery worker --loglevel=info --logfile=logs/celery.log -l info -E 
+    volumes:
+      - ./klutest:/usr/src/klutest
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      - ai
+      - redis
+    mem_limit: 2GB
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 2GB
+
+  redis:
+    image: redis:7
+  
+  benchmark:
+    image: mher/flower:1.2
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    restart: always
+    ports:
+      - 5555:5555
+    depends_on:
+      - worker
