@@ -34,20 +34,7 @@ The list for obligatory concept improvement:
 - Making authentication and authorisation for users 
 - Optimise CORS for separate read and write
 
-* @app.get("/datasets/")
-async def read_datasets(database: dict = Depends(get_database)):
-return {"database": database}
-** @router.get("/")
-def get_conversations(
-params: PaginationParams = Depends(),
-session: Session = Depends(get_session)
-) -> List[Conv]:
-with session.begin():
-query = (f"SELECT * FROM Conv ORDER BY id OFFSET {params.skip}"
-f" ROWS FETCH NEXT {params.limit} ROWS ONLY")
-result = session.execute(text(query))
-answer = [Conv(**dict(row)) for row in result.fetchall()]
-return answer
+
 
 
 
