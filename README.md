@@ -7,32 +7,29 @@ $ docker-compose up -d --build
 
 
 http://localhost:8004
+
 monitor app (Flower): http://localhost:5556 
 
-remark:
+Note:
 
-- Working with DataSet on huggingface:
-python -c "from datasets import load_dataset; 
-print(load_dataset('squad', split='train')[0])"
 
-The measurement of simple chat is out of the concept of fast and reliable enterprise app: this is
-FastAPI app using celery and redis. 
+
+
 - Websocket is used for chat as suitable for real time apps, 
 - FastAPI improves transaction per second along many other features, 
 - Celery is replacing background task of fast API (request/response flow is not blocked).
 
 Benchmark using flower is getting dataset in o.012s if dataset is array of two object.
 
-Beside implementing concept of Async request handling and data fetching, background task which are replaced by celery and redis, caching, CORS current concept improvements are endless:
-- Parallelism in handling celery task (chat for million of users), celery task handling some some common functionalities for chat
-- Data structure and concept would be more optimised, still using FastAPI:
-	- Beside using out of the box alchemy integration (along with session) and making real case and making index for dataset in db, and not currently implemented indexing in dict (which is generating in every call of the app and celery tasks)
-	Inject dependencies into API endpoints *
+Beside implementing Async request handling and data fetching, background task replacing by celery and redis, caching, CORS etc. the list for concept improvement is endless:
+- Parallelism in handling celery task (chat for million of users)
+- Data structure and concept can be more optimised, still using FastAPI:
+	- using alchemy integration (along with session) and making index for dataset in db
+	- Inject dependencies into API endpoints *
     - Taking care of questions in row, probably **	
-    - Additionaly FastAPI provides blueprint for all numbered and plus integration of Jupyter notebook, multiple server processes etc.
+    - integration of Jupyter notebook, multiple server processes etc.
     - Add workers
     - Monitor task queues by celery needs to be more detailed: The client ->FastAPI app->message broker-> Celery workers (saving and updating task status)
-    - Flower is used for benchmark but it is overall useful for monitoring.
 
 - Making authentication and authorisation for users 
 - Optimise CORS for separate read and write
