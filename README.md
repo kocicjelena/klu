@@ -21,7 +21,7 @@ Note:
 
 Benchmark using flower is getting dataset in o.012s if dataset is array of two object.
 
-Beside implementing Async request handling and data fetching, background task replacing by celery and redis, caching, CORS etc. the list for concept improvement is endless:
+The list for obligatory concept improvement:
 - Parallelism in handling celery task (chat for million of users)
 - Data structure and concept can be more optimised, still using FastAPI:
 	- using alchemy integration (along with session) and making index for dataset in db
